@@ -27,11 +27,11 @@
 <body>
 
 	<!-- Logo -->
-	<a href="index.html"><img src="/static/images/logosite.png" class="logosite" /></a>
+	<a href="home/"><img src="/static/images/logosite.png" class="logosite" /></a>
 	
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a id="homebutton" class="navbar-brand" href="index.html/"><img src="/static/images/home.png" class="logo" /></a>
+        <a id="homebutton" class="navbar-brand" href="{% url 'index' %}"><img src="/static/images/home.png" class="logo" /></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -56,7 +56,7 @@
                 {% include "home.html" %}
             {% else %}
                 <li class="nav-item open-modal">
-                    <a id="login" class="nav-link" href="login/">Login</a>
+                    <a id="login" href="#myModal" class="nav-link trigger-btn" data-toggle="modal">Login</a>
                 </li>
                 <li class="nav-item">
                     <a id="signup" class="nav-link" href="register/">Registar</a>
@@ -65,6 +65,9 @@
                     <a class="nav-link" href="watchlist/">Leiloes Desejados</a>
                 </li>
              {% endif %} 
+            </ul>
+        </nav>
+        <nav>
              <div class="d-flex justify-content-center">
                 <div class="p-2">
                     <div id="replacement">
@@ -75,13 +78,39 @@
                 </div>
             </div>
         </nav>
-            <footer class="footer-distributed">
-                <div class="footer-left">
-                   <h3>Auctions<span>online</span></h3>
-                    <p class="footer-company-name">Auctions Online &copy; 2023</p>
-                 </div>
-            </footer>   
-	
-	
+        <footer class="footer-distributed">
+            <div class="footer-left">
+                <h3>Auctions<span>online</span></h3>
+                <p class="footer-company-name">Auctions Online &copy; 2023</p>
+            </div>
+        </footer>   
+
+	<!-- Login MODAL -->
+	<div id="myModal" class="modal fade text-center">
+        <div class="modal-dialog">
+            <div class="col-lg-8 col-sm-8 col-12 main-section">
+                <div class="modal-content">
+                    <div class="col-lg-12 col-sm-12 col-12 user-img">
+                        <img src="/static/images/man.png">
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-12 form-input">
+                    <form method="post" action="login/">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input name="username" type="text" class="form-control" placeholder="Enter username">
+                    </div>
+                    <div class="form-group">
+                        <input name="password" type="password" class="form-control" placeholder="Password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                    </div>
+                    <div class="col-lg-12 col-sm-12 col-12 link-part">
+                        <a href="http://www.nicesnippets.com" target="_blank">Forgot Password?</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

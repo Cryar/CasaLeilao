@@ -50,3 +50,5 @@ def index(request):
     }
     return render(request, 'index.html', context)
     
+def watchlist(request):    
+    return render(request, 'watchlist.html' )

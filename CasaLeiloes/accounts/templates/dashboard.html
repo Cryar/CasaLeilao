@@ -6,16 +6,25 @@
     <title>User Dashboard</title>
 </head>
 <body>
-    <h1>Welcome, {{ user.username }}!</h1>
-    <p>Your email: {{ user.email }}</p>
-    <p>Your balance: {{ user.client.balance }}</p>
-    <p>Your watchlist:</p>
-    <ul>
+    {% extends 'index.html' %}
+    {% block body %}
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group row">
+            <h1>Welcome, {{ user.username }}!</h1>
+            <p>Your email: {{ user.email }}</p>
+            <p>Your balance: {{ user.client.balance }}</p>
+            <p>Your watchlist:</p>
+            <ul>
         {% for item in user.client.watchlist.all %}
             <li>{{ item.name }}</li>
         {% empty %}
             <li>Your watchlist is empty.</li>
         {% endfor %}
-    </ul>
+            </ul>
+            </div>
+        </div>
+    </div>
+   {%endblock%}
 </body>
 </html>

@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from accounts import views
 
-app_name = 'website'
+app_name = 'CasaLeiloes'
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -27,4 +27,5 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'),
     path('login/', views.user_login, name='login'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('watchlist/', views.watchlist, name='watchlist'),
 ]
