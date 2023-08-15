@@ -1,4 +1,4 @@
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect
 from .forms import RegistrationForm
 from items.models import ItemDocument
@@ -30,6 +30,10 @@ def user_login(request):
             # Handle login failure
             pass  # You can add error messages or additional logic here
     return render(request, 'registration/login.html')
+
+def user_logout(request):
+    logout(request)  # Logout the user
+    return redirect('index')
 
 def dashboard(request):
     user = request.user

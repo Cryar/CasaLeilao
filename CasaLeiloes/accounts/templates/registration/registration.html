@@ -1,6 +1,30 @@
-<h2>Register</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Register</button>
-</form>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Auctions Online - Registration Page</title>
+    <style>
+        #reg { margin-top : 20px; }
+        #subbut {margin-top: 20px; margin-left: 152px;}
+        .frm { margin-top: -15px; }
+    </style>
+</head>
+<body>
+    {% extends 'index.html' %}
+    {% block body %}
+        <div id="reg">
+        <div>
+        <h2>Register</h2>
+        </div>
+            <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                {{ form.as_p }}
+                <div class="form-group row">                
+                    <button id="subbut" type="submit" class="btn btn-primary col-sm-5" value="register_v2">registar</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    {%endblock%}
+</body>
+</html>
