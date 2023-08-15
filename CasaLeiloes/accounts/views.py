@@ -5,6 +5,8 @@ from items.models import ItemDocument
 from .models import CustomUser, Client
 from items.models import ItemDocument  # Import the Item model or adjust the import based on your app structure
 
+#changes
+
 def registration(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
