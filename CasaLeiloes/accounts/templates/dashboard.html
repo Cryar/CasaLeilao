@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ user.username }}!</h1>
+    <p>Your email: {{ user.email }}</p>
+    <p>Your balance: {{ user.client.balance }}</p>
+    <p>Your watchlist:</p>
+    <ul>
+        {% for item in user.client.watchlist.all %}
+            <li>{{ item.name }}</li>
+        {% empty %}
+            <li>Your watchlist is empty.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
