@@ -11,10 +11,9 @@ def registration(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            user = form.save()  # This automatically hashes the password
-            client = Client(user=user)
-            client.save()
-            return redirect('user_login')  # Redirect to the login page after successful registration
+            user = form.save()
+            # Handle further logic, such as logging in the user
+            return redirect('index')  # Redirect to the index page
     else:
         form = RegistrationForm()
     return render(request, 'registration/registration.html', {'form': form})
