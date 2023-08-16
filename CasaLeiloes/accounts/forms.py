@@ -27,6 +27,20 @@ class LoginForm(AuthenticationForm):
 
 class AddItemForm(forms.Form):
     item_name = forms.CharField(label='Item Name', max_length=100)
-    item_price = forms.DecimalField(label='Starting Price', max_digits=10, decimal_places=2)
     item_description = forms.CharField(label='Item Description', widget=forms.Textarea)
     item_image = forms.ImageField(label='Item Image', required=False)  # Allow uploading images
+    
+class AlterProduto(forms.Form):
+    new_name = forms.CharField(
+        label='New Name',
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    new_description = forms.CharField(
+        label='New Description',
+        widget=forms.Textarea(attrs={'class': 'form-control'})
+    )
+    new_image = forms.ImageField(
+        label='New Image',
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control-file'})
+    )

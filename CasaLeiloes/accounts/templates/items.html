@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/css/produtos.css">
+</head>
+<body>
+    <div class="grid-container">
+        <!-- Loop through items and create cards -->
+        {% for produto in produtos %}
+        <div class="card">
+            <img class="card-img-top" src='{{ produto.image }}' alt="Card image cap">
+            <div class="card-body">
+                <h4 class="card-title">{{ produto.title }}</h4>
+                <p class="card-text">{{ produto.description }}</p>
+                <p class="text-muted">Auction starts: {{ produto.created_at|time:'H:i' }}</p>
+            </div>
+            <div class="card-footer">
+                {% if user.is_staff %}
+                    <!-- Change Price Button for staff/admin -->
+                    <a href="{% url 'alter_produto' produto.produto_id %}" class="btn btn-outline-primary">Editar Produto</a>
+                {% else %}
+                    {% if watchlist %}
+                        {% if produto.id in watchlist %}
+                            <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='/website/watchlist/{{ item.id }}'">Unwatch</button>
+                        {% else %}
+                            <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='/website/watchlist/{{ item.id }}'">Watch</button>
+                        {% endif %}
+                    {% else %}
+                        <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='bid/{{ item.id }}'">Bid Now</button>
+                        <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='watchlist/{{ item.id }}'">Watch</button>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

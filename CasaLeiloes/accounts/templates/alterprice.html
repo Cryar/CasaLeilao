@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Alterar Produto</title>
+    <!-- Include Bootstrap CSS and other stylesheets -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Alter Product</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="new_name">Novo Nome</label>
+                <input type="text" class="form-control" id="new_name" name="new_name">
+            </div>
+            <div class="form-group">
+                <label for="new_description">Nova Descrição</label>
+                <textarea class="form-control" id="new_description" name="new_description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="new_image">Nova Imagem</label>
+                <input type="file" class="form-control-file" id="new_image" name="new_image">
+            </div>
+            <button type="submit" class="btn btn-primary">Atualizar Producto</button>
+        </form>
+    </div>
+
+    <!-- Include Bootstrap JS and other scripts if needed -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

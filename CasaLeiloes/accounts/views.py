@@ -1,10 +1,8 @@
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import RegistrationForm, AddItemForm
-from items.models import ItemDocument
-from .models import CustomUser, Client
-from items.models import ItemDocument  # Import the Item model or adjust the import based on your app structure
-
+from .forms import RegistrationForm, AddItemForm, AlterProduto
+from .models import CustomUser, Client, Produtos
+from django.db import connection
 #changes
 
 def registration(request):
@@ -28,7 +26,7 @@ def user_login(request):
             return redirect('index')  # Redirect to the index page after successful login
         else:
             # Handle login failure
-            pass  # You can add error messages or additional logic here
+            return redirect('register')
     return render(request, 'registration/login.html')
 
 def user_logout(request):
@@ -44,9 +42,9 @@ def perfil(request):
     return render(request, 'perfil.html', context)
 
 def index(request):
-    items = ItemDocument.objects.all()
+    produtos = Produtos.objects.all()
     context = {
-        'items': items,
+        'produtos': produtos,
     }
     return render(request, 'index.html', context)
     
@@ -61,14 +59,12 @@ def add_item(request):
         form = AddItemForm(request.POST, request.FILES)  # Include request.FILES for handling images
         if form.is_valid():
             item_name = form.cleaned_data['item_name']
-            starting_price = form.cleaned_data['item_price']  # Use starting_price field
             item_description = form.cleaned_data['item_description']
             item_image = form.cleaned_data['item_image']
 
             # Create a new ItemDocument instance
-            new_item = ItemDocument(
+            new_item = Produtos(
                 title=item_name,  # Assuming title corresponds to item_name
-                starting_price=starting_price,
                 description=item_description,
                 image=item_image
             )
@@ -81,16 +77,20 @@ def add_item(request):
 
     return render(request, 'admin.html', {'form': form})
 
-def alter_price(request, item_id):
-    item = get_object_or_404(ItemDocument, id=item_id)
+
+def alter_produto(request, produto_id):
+    produtos = get_object_or_404(Produtos, produto_id=produto_id)
     
     if request.method == 'POST':
-        new_price = request.POST['new_price']
-        
-        # Update the item's price
-        item.price = new_price
-        item.save()
-        
+        new_name= request.POST['new_name']
+        new_description = request.POST['new_description']
+        new_image = request.POST['new_image']
+            
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT alter_produto(%s, %s, %s, %s)",
+                            [produto_id, new_name, new_description, new_image])
+
         return redirect('admin')  # Redirect back to the admin page
-    
-    return render(request, 'admin.html')
+
+    produtos = get_object_or_404(Produtos, produto_id=produto_id)
+    return render(request, 'alterprice.html', {'produtos': produtos})
