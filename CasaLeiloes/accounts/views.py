@@ -93,4 +93,4 @@ def alter_produto(request, produto_id):
         return redirect('admin')  # Redirect back to the admin page
 
     produtos = get_object_or_404(Produtos, produto_id=produto_id)
-    return render(request, 'alterprice.html', {'produtos': produtos})
+    return render(request, 'alterproduto.html', {'produtos': produtos})

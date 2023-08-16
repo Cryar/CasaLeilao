@@ -1,11 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Alterar Produto</title>
-    <!-- Include Bootstrap CSS and other stylesheets -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="/static/css/footer.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+
+    <!-- ICON -->
+    <link rel="icon" href="/static/images/icon.png">
+
+    <!-- PAGE CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
 </head>
 <body>
+    {% extends 'index.html' %}
+    {% block body %}
     <div class="container mt-4">
         <h1>Alter Product</h1>
         <form method="post">
@@ -25,7 +36,7 @@
             <button type="submit" class="btn btn-primary">Atualizar Producto</button>
         </form>
     </div>
-
+    {% endblock %}
     <!-- Include Bootstrap JS and other scripts if needed -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

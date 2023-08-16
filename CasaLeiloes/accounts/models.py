@@ -18,7 +18,7 @@ class Produtos(models.Model):
     produto_id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField(upload_to='item_images/')
+    image = models.ImageField(upload_to='static/images/products')
     created_at = models.DateTimeField(auto_now_add=True)
 
     #class Meta:
