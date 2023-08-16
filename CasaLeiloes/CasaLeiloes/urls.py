@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from accounts import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'CasaLeiloes'
 
@@ -31,4 +33,8 @@ urlpatterns = [
     path('watchlist/', views.watchlist, name='watchlist'),
     path('add_item/', views.add_item, name='add_item'),
     path('alter_produto/<int:produto_id>/', views.alter_produto, name='alter_produto'),
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
