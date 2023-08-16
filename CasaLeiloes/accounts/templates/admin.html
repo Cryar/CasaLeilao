@@ -5,16 +5,13 @@
 </head>
 <body>
     <li class="nav-item">
-        <a class="text">Saldo : {{ balance }}€</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="watchlist/">Leiloes Desejados</a>
+        <a class="nav-link" href="{% url 'admin' %}">Admin Dashboard</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{% url 'perfil' %}">Perfil</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="logout/">Logout</a>
+        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
     </li>
 </body>
 </html>

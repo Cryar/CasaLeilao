@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="/static/css/footer.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+
+
+    <!-- ICON -->
+    <link rel="icon" href="/static/images/icon.png">
+
+    <!-- PAGE CSS -->
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css">
+</head>
+<body>
+    {% extends 'index.html' %}
+    {% block body %}
+    <div class="custom-container">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h1 class="card-title text-center">Welcome, {{ user.username }}!</h1>
+                <p class="card-text text-center">Your email: {{ user.email }}</p>
+                <p class="card-text text-center">Your balance: ${{ user.client.balance }}</p>
+                <h5 class="card-title text-center">Your watchlist:</h5>
+                <ul class="list-group">
+                    {% for item in user.client.watchlist.all %}
+                        <li class="list-group-item">{{ item.name }}</li>
+                    {% empty %}
+                        <li class="list-group-item">Your watchlist is empty.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+    <!-- Include Bootstrap JS and other scripts if needed -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

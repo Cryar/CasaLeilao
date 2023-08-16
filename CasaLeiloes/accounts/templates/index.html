@@ -52,8 +52,12 @@
         </ul>
         
         <ul id="right_navbar" class="navbar-nav ml-auto">
-           {% if user.is_authenticated %}
-                {% include "home.html" %}
+            {% if user.is_authenticated %}
+                {% if user.is_staff %}  <!-- Check if user is admin -->
+                    {% include "admin.html" %}
+                {% else %}
+                    {% include "home.html" %}
+                {% endif %}
             {% else %}
                 <li class="nav-item open-modal">
                     <a id="login" href="#myModal" class="nav-link trigger-btn" data-toggle="modal">Login</a>
@@ -64,8 +68,8 @@
                 <li class="nav-item">
                     <a class="nav-link" href="watchlist/">Leiloes Desejados</a>
                 </li>
-             {% endif %} 
-            </ul>
+            {% endif %} 
+        </ul>     
         </nav>
         <nav>
              <div class="d-flex justify-content-center">

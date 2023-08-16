@@ -24,3 +24,9 @@ class RegistrationForm(forms.ModelForm):
 class LoginForm(AuthenticationForm):
     # No need to define fields as they are inherited from AuthenticationForm
     pass
+
+class AddItemForm(forms.Form):
+    item_name = forms.CharField(label='Item Name', max_length=100)
+    item_price = forms.DecimalField(label='Starting Price', max_digits=10, decimal_places=2)
+    item_description = forms.CharField(label='Item Description', widget=forms.Textarea)
+    item_image = forms.ImageField(label='Item Image', required=False)  # Allow uploading images

@@ -23,9 +23,12 @@ app_name = 'CasaLeiloes'
 urlpatterns = [
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),
+    path('dashboard/', views.adminDashboard, name='admin'),
     path('register/', views.registration, name='register'),
     path('logout/', views.user_logout, name='logout'),
     path('login/', views.user_login, name='login'),
-    path('dashboard/', views.dashboard, name='dashboard'),
+    path('perfil/', views.perfil, name='perfil'),
     path('watchlist/', views.watchlist, name='watchlist'),
+    path('add_item/', views.add_item, name='add_item'),
+    path('alter_price/<int:item_id>/', views.alter_price, name='alter_price'),
 ]

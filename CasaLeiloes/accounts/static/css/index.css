@@ -33,3 +33,11 @@
     padding: 5px 10px;
     cursor: pointer;
 }
+
+.custom-container {
+    margin-left: 20px;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 200px;
+}
