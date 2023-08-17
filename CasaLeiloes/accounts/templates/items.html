@@ -13,11 +13,10 @@
                 <h4 class="card-title">{{ produto.title }}</h4>
                 <p class="card-text">{{ produto.description }}</p>
                 <p class="text-muted">Leilão começa: {{ produto.created_at|time:'H:i' }}</p>
-            </div>
             <div class="card-footer">
                 {% if user.is_staff %}
                     <!-- Change Price Button for staff/admin -->
-                    <a href="{% url 'alter_produto' produto.produto_id %}" class="btn btn-outline-primary">Editar Produto</a>
+                    <a href="{% url 'alter_produto' produto.product_id %}" class="btn btn-outline-primary">Editar Produto</a>
                 {% else %}
                     {% if watchlist %}
                         {% if produto.id in watchlist %}
@@ -26,8 +25,8 @@
                             <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='/website/watchlist/{{ item.id }}'">Watch</button>
                         {% endif %}
                     {% else %}
-                        <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='bid/{{ item.id }}'">Bid Now</button>
-                        <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='watchlist/{{ item.id }}'">Watch</button>
+                    <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='{% url 'bid' product_id=produto.product_id %}'">Bid Now</button>
+                        <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='{% url 'watchlist' %}'">Watch</button>
                     {% endif %}
                 {% endif %}
             </div>

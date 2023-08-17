@@ -1,16 +1,9 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 import mongoengine
-
-class CustomUser(AbstractUser):
-    is_admin = models.BooleanField(default=False)
-    # Add other fields for user roles and profile
-
-    def __str__(self):
-        return self.username
-
-#from CasaLeiloes.settings import MONGOENGINE
-
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.postgres.fields import ArrayField
+from django.contrib.auth import get_user_model
 # Create your models here.
 
 class CustomUser(AbstractUser):
@@ -19,73 +12,62 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
-#from CasaLeiloes.settings import MONGOENGINE
+#from CasaLeiloes.settings import models
 
 # Create your models here.
-class Lots(models.Model):
+class Lotes(models.Model):
     lot_id = models.AutoField(primary_key=True)
     lot_name = models.CharField(max_length=50)
     description = models.TextField()
 
-class Products(models.Model):
+class Produtos(models.Model):
     product_id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
-    image = models.ImageField(upload_to='item_images/')
     created_at = models.DateTimeField(auto_now_add=True)
-    lot = models.ForeignKey(Lots, on_delete=models.CASCADE)
+    lot = models.ForeignKey(Lotes, on_delete=models.CASCADE)
 
-class Auctions(models.Model):
+    def __str__(self):
+        return self.title
+
+class ProdutosImage(models.Model):
+    produto = models.ForeignKey(Produtos, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='images/products/')
+
+    def __str__(self):
+        return self.image.url
+
+class Leiloes(models.Model):
     auction_id = models.BigAutoField(primary_key=True, default=int)
-    product = models.ForeignKey(Products, on_delete=models.CASCADE)
+    product = models.ForeignKey(Produtos, on_delete=models.CASCADE)
     number_of_bids = models.IntegerField()
     base_price = models.DecimalField(max_digits=6, decimal_places=2)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     minimum_increment = models.DecimalField(max_digits=6, decimal_places=2, default=100.00)
 
-class Negotiations(models.Model):
-    negotiation_id = models.IntegerField(primary_key=True)
-    product = models.ForeignKey(Products, on_delete=models.CASCADE)
-    number_of_bids = models.IntegerField()
-    proposed_value = models.DecimalField(max_digits=6, decimal_places=2)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
-
 class Watchlist(models.Model):
     watchlist_id = models.BigAutoField(primary_key=True, default=int)
-    auctions = models.ManyToManyField(Auctions, on_delete=models.CASCADE)
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    negotiations = models.ManyToManyField(Negotiations, on_delete=models.CASCADE)
+    auctions = models.ForeignKey(Leiloes, on_delete=models.CASCADE)
+    
+class watchlist_user(models.Model):
+    watchlist_user_id = models.ForeignKey(Watchlist, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, models.CASCADE)
+    
 
-class Bids_Auction(models.Model):
+class Licitacoes(models.Model):
     bid_id = models.IntegerField(primary_key=True, serialize=True, unique=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    auction = models.ForeignKey(Auctions, on_delete=models.CASCADE)
+    user = models.IntegerField()
     bid_time = models.DateTimeField()
     minimum_value = models.DecimalField(max_digits=6, decimal_places=2)
     final_value = models.DecimalField(max_digits=6, decimal_places=2)
 
-class Bids_Negotiation(models.Model):
-    bid_id = models.IntegerField(primary_key=True, serialize=True, unique=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    negotiation = models.ForeignKey(Negotiations, on_delete=models.CASCADE)
-    bid_time = models.DateTimeField()
-    minimum_value = models.DecimalField(max_digits=6, decimal_places=2)
-    final_value = models.DecimalField(max_digits=6, decimal_places=2)
-
-class CostCenter_Negotiations(models.Model):
+class Centro_custo(models.Model):
     cost_center_id = models.AutoField(primary_key=True)
     cost_center_date = models.DateField()
-    bid = models.ForeignKey(Bids_Negotiation, on_delete=models.CASCADE)
+    bid = models.ForeignKey(Licitacoes,on_delete=models.CASCADE)
 
-class CostCenter_Auctions(models.Model):
-    cost_center_id = models.AutoField(primary_key=True)
-    cost_center_date = models.DateField()
-    bid = models.ForeignKey(Bids_Auction, on_delete=models.CASCADE)
-
-
-'''class Client(mongoengine.Document):
+class Client(mongoengine.Document):
     id = models.BigAutoField(primary_key=True)
     user = mongoengine.IntField(unique=True)
     username = mongoengine.StringField(unique=True)
@@ -94,5 +76,10 @@ class CostCenter_Auctions(models.Model):
     watchlist = mongoengine.ListField()
     
     def __str__(self):
-        return self.username'''
-  
+        return self.username
+    
+class BiddingHistory(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    leilao = models.ForeignKey(Leiloes, on_delete=models.CASCADE)
+    bid_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    bid_time = models.DateTimeField(auto_now_add=True)

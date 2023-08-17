@@ -1,6 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from .models import CustomUser, Client
 from django import forms
+from django.contrib.postgres.fields import ArrayField
+from multiupload.fields import MultiFileField
 
 class RegistrationForm(forms.ModelForm):
     password1 = forms.CharField(widget=forms.PasswordInput)
@@ -28,7 +30,8 @@ class LoginForm(AuthenticationForm):
 class AddItemForm(forms.Form):
     item_name = forms.CharField(label='Item Name', max_length=100)
     item_description = forms.CharField(label='Item Description', widget=forms.Textarea)
-    item_image = forms.ImageField(label='Item Image', required=False)  # Allow uploading images
+    item_images = MultiFileField(label='Item Images')
+    item_lot = forms.IntegerField(label='item_lot', required= False)
     
 class AlterProduto(forms.Form):
     new_name = forms.CharField(
@@ -44,3 +47,6 @@ class AlterProduto(forms.Form):
         label='New Image',
         widget=forms.ClearableFileInput(attrs={'class': 'form-control-file'})
     )
+    
+class BidForm(forms.Form):
+    bid_amount = forms.DecimalField(max_digits=10, decimal_places=2)

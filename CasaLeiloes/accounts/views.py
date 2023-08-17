@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import RegistrationForm, AddItemForm, AlterProduto
-from .models import CustomUser, Client, Produtos
+from .forms import RegistrationForm, AddItemForm, AlterProduto, BidForm
+from .models import CustomUser, Client, Produtos, BiddingHistory, Lotes, ProdutosImage
 from django.db import connection
 #changes
 
@@ -43,8 +43,10 @@ def perfil(request):
 
 def index(request):
     produtos = Produtos.objects.all()
+    bids = BiddingHistory.objects.all()
     context = {
         'produtos': produtos,
+        'bids' : bids,
     }
     return render(request, 'index.html', context)
     
@@ -56,26 +58,39 @@ def adminDashboard(request):
 
 def add_item(request):
     if request.method == 'POST':
-        form = AddItemForm(request.POST, request.FILES)  # Include request.FILES for handling images
+        form = AddItemForm(request.POST, request.FILES)
         if form.is_valid():
             item_name = form.cleaned_data['item_name']
             item_description = form.cleaned_data['item_description']
-            item_image = form.cleaned_data['item_image']
-
-            # Create a new ItemDocument instance
-            new_item = Produtos(
-                title=item_name,  # Assuming title corresponds to item_name
-                description=item_description,
-                image=item_image
-            )
-            new_item.save()
-
-            return redirect('admin')  # Redirect to the admin page after adding an item
+            item_lot = form.cleaned_data['item_lot']
+            item_images = form.cleaned_data['item_images']  # Get list of uploaded images
             
+            item_lot_instance = Lotes.objects.get(pk=item_lot)
+            
+            if len(item_images) <= 3:  # Limit to 3 images
+                new_item = Produtos(
+                    title=item_name,
+                    description=item_description,
+                    lot=item_lot_instance,
+                )
+                new_item.save()
+
+                # Create ProdutosImage instances and associate them with the new product
+                for image in item_images:
+                    ProdutosImage.objects.create(produto=new_item, image=image)
+
+                return redirect('admin')  # Redirect to the admin page after adding an item
+            else:
+                error_message = "You can only upload up to 3 images."
+        else:
+            error_message = "Form is not valid."
     else:
         form = AddItemForm()
+        error_message = ""
 
-    return render(request, 'admin.html', {'form': form})
+    return render(request, 'admin.html', {'form': form, 'error_message': error_message})
+
+
 
 
 def alter_produto(request, produto_id):
@@ -94,3 +109,22 @@ def alter_produto(request, produto_id):
 
     produtos = get_object_or_404(Produtos, produto_id=produto_id)
     return render(request, 'alterproduto.html', {'produtos': produtos})
+
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def bid(request, product_id):
+    produto = get_object_or_404(Produtos, produ_id=product_id)
+    if request.method == 'POST':
+        form = BidForm(request.POST)
+        if form.is_valid():
+            bid_amount = form.cleaned_data['bid_amount']
+            user = request.user  # This should now be a valid CustomUser instance
+            bid_history = BiddingHistory(user=user, item=produto, bid_amount=bid_amount)
+            bid_history.save()
+            return redirect('bid', product_id=product_id)
+    else:
+        form = BidForm()
+
+    context = {'form': form, 'produto': produto}
+    return render(request, 'bid.html', context)
