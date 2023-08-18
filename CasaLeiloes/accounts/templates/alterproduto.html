@@ -37,7 +37,7 @@
                 {% for existing_image in existing_images %}
                 <img src="{{ existing_image.image.url }}" alt="Existing Image">
                 <label for="image_{{ existing_image.id }}">
-                <input default="0" type="checkbox" name="deleted_images" value="{{ existing_image.image.url }}" id="image_{{ existing_image.image.url }}">Delete</label>
+                <input default="0" type="checkbox" name="deleted_images" value="{{ existing_image.id }}" id="image_{{ existing_image.image.url }}">Delete</label>
                 {% endfor %}
                 <!-- Provide file input for new images -->
                 <input type="file" name="new_image" multiple>

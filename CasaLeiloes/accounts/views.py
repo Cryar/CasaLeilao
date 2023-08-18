@@ -101,7 +101,7 @@ def alter_produto(request, product_id):
         new_description = request.POST['new_description']
         new_lot = request.POST['new_lot']
         new_image = request.POST['new_image']  # Get a list of uploaded images
-        deleted_images = request.POST.getlist('deleted_image[]') # Get a list of images to delete
+        deleted_images = request.POST['deleted_images'] # Get a list of images to delete
         
         if not deleted_images:
              deleted_images = []
