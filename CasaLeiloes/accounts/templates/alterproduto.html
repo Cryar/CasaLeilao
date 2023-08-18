@@ -30,8 +30,17 @@
                 <textarea class="form-control" id="new_description" name="new_description"></textarea>
             </div>
             <div class="form-group">
-                <label for="new_image">Nova Imagem</label>
-                <input type="file" class="form-control-file" id="new_image" name="new_image">
+                <label for="new_lot">Novo Lote</label>
+                <input type="text" class="form-control" id="new_lot" name="new_lot">
+            </div>
+            <div class="form-group">
+                {% for existing_image in existing_images %}
+                <img src="{{ existing_image.image.url }}" alt="Existing Image">
+                <label for="image_{{ existing_image.id }}">
+                <input default="0" type="checkbox" name="deleted_images" value="{{ existing_image.image.url }}" id="image_{{ existing_image.image.url }}">Delete</label>
+                {% endfor %}
+                <!-- Provide file input for new images -->
+                <input type="file" name="new_image" multiple>
             </div>
             <button type="submit" class="btn btn-primary">Atualizar Producto</button>
         </form>

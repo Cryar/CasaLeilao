@@ -8,10 +8,13 @@
         <!-- Loop through items and create cards -->
         {% for produto in produtos %}
         <div class="card">
-            <img class="card-img-top" src="static/images/products/{{ produto.image }}" alt="Card image cap">
+            {% for image in produto.produtosimage_set.all %}
+                <img class="card-img-top" src="{{ image.image.url }}" alt="Card image cap">
+            {% endfor %}
             <div class="card-body">
-                <h4 class="card-title">{{ produto.title }}</h4>
-                <p class="card-text">{{ produto.description }}</p>
+                <h4 class="card-title">Produto: {{ produto.title }}</h4>
+                <p class="card-text">Descrição: {{ produto.description }}</p>
+                <p class="card-text">Lote: {{produto.lot_id}}</p>
                 <p class="text-muted">Leilão começa: {{ produto.created_at|time:'H:i' }}</p>
             <div class="card-footer">
                 {% if user.is_staff %}

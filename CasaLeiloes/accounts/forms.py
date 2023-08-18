@@ -37,16 +37,30 @@ class AlterProduto(forms.Form):
     new_name = forms.CharField(
         label='New Name',
         max_length=100,
-        widget=forms.TextInput(attrs={'class': 'form-control'})
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required= False
     )
     new_description = forms.CharField(
         label='New Description',
-        widget=forms.Textarea(attrs={'class': 'form-control'})
+        widget=forms.Textarea(attrs={'class': 'form-control'}),
+        required= False
     )
-    new_image = forms.ImageField(
+    new_image = MultiFileField(
         label='New Image',
-        widget=forms.ClearableFileInput(attrs={'class': 'form-control-file'})
+        widget=forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+        required= False
     )
+    new_lot = forms.IntegerField(
+        label='New Lot',
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required= False
+    )
+    deleted_image = MultiFileField(
+       label='deleted_image',
+       widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control-file'}), 
+       required= False
+    )
+    
     
 class BidForm(forms.Form):
     bid_amount = forms.DecimalField(max_digits=10, decimal_places=2)

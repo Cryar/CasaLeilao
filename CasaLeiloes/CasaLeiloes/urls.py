@@ -32,7 +32,7 @@ urlpatterns = [
     path('perfil/', views.perfil, name='perfil'),
     path('watchlist/', views.watchlist, name='watchlist'),
     path('add_item/', views.add_item, name='add_item'),
-    path('alter_produto/<int:produto_id>/', views.alter_produto, name='alter_produto'),
+    path('alter_produto/<int:product_id>/', views.alter_produto, name='alter_produto'),
     path('bid/<int:product_id>/', views.bid, name='bid'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

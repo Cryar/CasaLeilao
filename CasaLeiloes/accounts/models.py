@@ -32,7 +32,7 @@ class Produtos(models.Model):
 
 class ProdutosImage(models.Model):
     produto = models.ForeignKey(Produtos, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/products/')
+    image = models.ImageField()
 
     def __str__(self):
         return self.image.url
