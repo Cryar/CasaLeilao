@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import RegistrationForm, AddItemForm, AlterProduto, BidForm
-from .models import CustomUser, Client, Produtos, BiddingHistory, Lotes, ProdutosImage
+from .forms import RegistrationForm, AddItemForm, AlterProduto, BidForm, LeiloesForm
+from .models import CustomUser, Client, Produtos, BiddingHistory, Lotes, ProdutosImage, Leiloes
 from django.db import connection
 #changes
 
@@ -41,14 +41,41 @@ def perfil(request):
     }
     return render(request, 'perfil.html', context)
 
+def edit_perfil(request, user_id):
+    user = CustomUser.objects.get(pk=user_id)
+    if request.method == 'POST':
+        new_username = request.POST['new_username']
+        new_email = request.POST['new_email']
+        
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT edit_user(%s,%s,%s)', [user_id, new_username, new_email])
+            
+        return redirect('perfil')  # Redirect to user profile page after editing
+        
+    context = {'user': user}
+    return render(request, 'perfil_edit.html', context)
+
+
+def password_change(request):
+    user = request.user
+    # Add any additional context data you want to display on the dashboard
+    context = {
+        'user': user,
+    }
+    return render(request, 'perfil.html', context)
+
+
 def index(request):
     produtos = Produtos.objects.all()
     bids = BiddingHistory.objects.all()
     images = ProdutosImage.objects.all()
+    auctions =Leiloes.objects.all()
+
     context = {
         'produtos': produtos,
         'bids' : bids,
         'images' : images,
+        'auctions': auctions,
     }
     return render(request, 'index.html', context)
     
@@ -113,7 +140,50 @@ def alter_produto(request, product_id):
 
         return redirect('admin')  # Redirect back to the admin page
 
-    return render(request, 'alterproduto.html', {'produtos': produto, 'existing_images': existing_images})
+    context = {
+            'produto': produto,
+            'existing_images': existing_images,
+             }
+    return render(request, 'alterproduto.html', context)
+
+def add_auction(request, product_id):
+   produto = get_object_or_404(Produtos, product_id=product_id)
+   if request.method == 'POST':
+        number_of_bids = request.POST['number_of_bids']
+        base_price = request.POST['base_price']
+        start_time = request.POST['start_time']
+        end_time = request.POST['end_time']
+        minimum_increment = request.POST['minimum_increment']
+
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT create_leilao(%s,%s,%s,%s,%s,%s)', [produto, number_of_bids, base_price,
+                                              start_time, end_time, minimum_increment])
+
+        return redirect('adminDashboard.html')  # Redirect to auctions page after inserting
+   
+   return render(request, 'add_auction.html', produto)
+
+
+def alter_auction(request, auction_id):
+    auction = Leiloes.objects.get(pk=auction_id)
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT * FROM view_leiloes;
+        """)
+        leiloes = cursor.fetchall()
+    if request.method == 'POST':
+        number_of_bids = request.POST['number_of_bids']
+        base_price = request.POST['base_price']
+        start_time = request.POST['start_time']
+        end_time = request.POST['end_time']
+        minimum_increment = request.POST['minimum_increment']
+
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT update_auction(%s,%s,%s,%s,%s,%s)', [auction_id, number_of_bids, base_price, start_time, end_time, minimum_increment])
+            
+        return redirect('admin')  # Redirect to the auctions page after updating
+
+    return render(request, 'alter_auction.html', {'auction': auction}, {'leiloes': leiloes})
 
 from django.contrib.auth.decorators import login_required
 

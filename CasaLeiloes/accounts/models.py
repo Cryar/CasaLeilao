@@ -39,7 +39,6 @@ class ProdutosImage(models.Model):
 
 class Leiloes(models.Model):
     auction_id = models.BigAutoField(primary_key=True, default=int)
-    product = models.ForeignKey(Produtos, on_delete=models.CASCADE)
     number_of_bids = models.IntegerField()
     base_price = models.DecimalField(max_digits=6, decimal_places=2)
     start_time = models.DateTimeField()

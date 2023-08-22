@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insert Product into Auction</title>
+</head>
+<body>
+    {% extends 'index.html' %}
+    {% block body %}
+    <h1>Insert Product into Auction</h1>
+    <form method="post" action="{% url 'add_auction' produto.product_id%}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <label for="product_id">Product ID:</label>
+            <input type="text" id="product_id" name="product_id" value = {{produto.product_id}}>
+        </div>
+        <div>
+            <label for="number_of_bids">Number of Bids:</label>
+            <input type="number" id="number_of_bids" name="number_of_bids">
+        </div>
+        <div>
+            <label for="base_price">Base Price:</label>
+            <input type="text" id="base_price" name="base_price">
+        </div>
+        <div>
+            <label for="start_time">Start Time:</label>
+            <input type="datetime-local" id="start_time" name="start_time">
+        </div>
+        <div>
+            <label for="end_time">End Time:</label>
+            <input type="datetime-local" id="end_time" name="end_time">
+        </div>
+        <div>
+            <label for="minimum_increment">Minimum Increment:</label>
+            <input type="text" id="minimum_increment" name="minimum_increment">
+        </div>
+        <button type="submit">Create Auction</button>
+    </form>
+    {%endblock%}
+</body>
+</html>

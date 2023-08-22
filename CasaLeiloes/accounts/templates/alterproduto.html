@@ -23,15 +23,15 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="new_name">Novo Nome</label>
-                <input type="text" class="form-control" id="new_name" name="new_name">
+                <input type="text" class="form-control" id="new_name" name="new_name" value="{{ produto.title }}">
             </div>
             <div class="form-group">
                 <label for="new_description">Nova Descrição</label>
-                <textarea class="form-control" id="new_description" name="new_description"></textarea>
+                <textarea class="form-control" id="new_description" name="new_description"> {{produto.description}}</textarea>
             </div>
             <div class="form-group">
                 <label for="new_lot">Novo Lote</label>
-                <input type="text" class="form-control" id="new_lot" name="new_lot">
+                <input type="text" class="form-control" id="new_lot" name="new_lot" value="{{ produto.lot_id }}">
             </div>
             <div class="form-group">
                 {% for existing_image in existing_images %}

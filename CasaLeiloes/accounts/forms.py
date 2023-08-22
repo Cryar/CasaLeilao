@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import CustomUser, Client
+from .models import CustomUser, Client, Leiloes
 from django import forms
 from django.contrib.postgres.fields import ArrayField
 from multiupload.fields import MultiFileField
@@ -61,6 +61,12 @@ class AlterProduto(forms.Form):
        required= False
     )
     
-    
+
+class LeiloesForm(forms.ModelForm):
+    class Meta:
+        model = Leiloes
+        fields = '__all__'
+
+
 class BidForm(forms.Form):
     bid_amount = forms.DecimalField(max_digits=10, decimal_places=2)

@@ -23,6 +23,8 @@
                 <h1 class="card-title text-center">Welcome, {{ user.username }}!</h1>
                 <p class="card-text text-center">Your email: {{ user.email }}</p>
                 <p class="card-text text-center">Your balance: ${{ user.client.balance }}</p>
+                <a href="{% url 'edit_perfil' user.id  %}"> editar perfil</a>
+                <a href="{% url 'password_change' %}">Change Password</a>
                 <h5 class="card-title text-center">Your watchlist:</h5>
                 <ul class="list-group">
                     {% for item in user.client.watchlist.all %}
@@ -31,6 +33,7 @@
                         <li class="list-group-item">Your watchlist is empty.</li>
                     {% endfor %}
                 </ul>
+
             </div>
         </div>
     </div>

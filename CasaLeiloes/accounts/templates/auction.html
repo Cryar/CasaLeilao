@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/css/auctions.css">
+</head>
+<body>
+    <div class="grid-container">
+        <!-- Loop through items and create cards -->
+        {% for leilao in leiloes %}
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Nome do produto: {{ leilao. }}</h4>
+                <p class="card-text">Descrição: {{ produto.description}}</p>
+                <p class="card-text">Lote: {{auction.nome_do_lote}}</p>
+                <p class="text-muted">Leilão começa: {{ auction.start_time|date:'Y-m-d H:i' }}</p>
+                <p class="text-muted">Leilão termina: {{ auction.end_time|date:'Y-m-d H:i' }}</p>
+                <p class="text-muted">Preçço base: {{ auction.base_price}}</p>
+            <div class="card-footer">
+                {% if user.is_staff %}
+                    <!-- Change Price Button for staff/admin -->
+                    <a href="{% url 'alter_auction' auction.auction_id%}" class="btn btn-outline-primary">Editar Leilao</a>
+                {% else %}
+                    {% if watchlist %}
+                        {% if leilao.auction_id in watchlist %}
+                            <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='/website/watchlist/{{ auction.auction_id}}'">Unwatch</button>
+                        {% else %}
+                            <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='/website/watchlist/{{ auction.auction_id}}'">Watch</button>
+                        {% endif %}
+                    {% else %}
+                    <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='{% url 'bid' auction_id=auction.auction_id %}'">Bid Now</button>
+                        <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='{% url 'watchlist' %}'">Watch</button>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

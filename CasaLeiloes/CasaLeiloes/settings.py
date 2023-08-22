@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'accounts',
+    'multiupload',
 ]
 
 MIDDLEWARE = [
@@ -79,8 +80,8 @@ DATABASES = {
   'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'CasaLeilao',
-        'USER': 'postgres',
-        'PASSWORD': 'hu58lz',
+        'USER': 'admin',
+        'PASSWORD': 'admin2023',
         'HOST': 'localhost',  # Change if using a remote server
         'PORT': '5432',  # Default PostgreSQL port
     },
