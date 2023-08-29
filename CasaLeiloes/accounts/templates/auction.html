@@ -6,29 +6,35 @@
 <body>
     <div class="grid-container">
         <!-- Loop through items and create cards -->
-        {% for leilao in leiloes %}
+        {% for produto in auctions %}
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Nome do produto: {{ leilao. }}</h4>
-                <p class="card-text">Descrição: {{ produto.description}}</p>
-                <p class="card-text">Lote: {{auction.nome_do_lote}}</p>
-                <p class="text-muted">Leilão começa: {{ auction.start_time|date:'Y-m-d H:i' }}</p>
-                <p class="text-muted">Leilão termina: {{ auction.end_time|date:'Y-m-d H:i' }}</p>
-                <p class="text-muted">Preçço base: {{ auction.base_price}}</p>
-            <div class="card-footer">
+                <h4 class="card-title">Nome do produto: {{ produto.1 }}</h4>
+                <p class="card-text">Descrição: {{ produto.2 }}</p>
+                <p class="card-text">Lote: {{ produto.4 }}</p>
+                <p class="text-muted">Leilão começa: {{ produto.10|date:'Y-m-d H:i' }}</p>
+                <p class="text-muted">Leilão termina: {{ produto.11|date:'Y-m-d H:i' }}</p>
+                <p class="text-muted">Preço base: {{ produto.9 }}</p>
+                <p class="text-muted">Número de licitações: {{ produto.8}}</p>
+                <ul>
+                    {% for image in produtos %}
+                    <li ><img src="{{image}}" alt="" class="product-image"></li>
+                    {% endfor %}
+                </ul>
+            </div>
                 {% if user.is_staff %}
                     <!-- Change Price Button for staff/admin -->
-                    <a href="{% url 'alter_auction' auction.auction_id%}" class="btn btn-outline-primary">Editar Leilao</a>
+                    <a href="{% url 'alter_auction' produto.7 %}" class="btn btn-outline-primary">Editar Leilao</a>
                 {% else %}
                     {% if watchlist %}
-                        {% if leilao.auction_id in watchlist %}
-                            <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='/website/watchlist/{{ auction.auction_id}}'">Unwatch</button>
+                        {% if produto.auction_id in watchlist %}
+                            <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='/website/watchlist/{{ produto.7}}'">Unwatch</button>
                         {% else %}
-                            <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='/website/watchlist/{{ auction.auction_id}}'">Watch</button>
+                            <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='/website/watchlist/{{ produto.7}}'">Watch</button>
                         {% endif %}
                     {% else %}
-                    <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='{% url 'bid' auction_id=auction.auction_id %}'">Bid Now</button>
-                        <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='{% url 'watchlist' %}'">Watch</button>
+                    <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='{% url 'bid' produto.7 %}'">Bid Now</button>
+                    <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='{% url 'watchlist' produto.7 %}'">Watch</button>
                     {% endif %}
                 {% endif %}
             </div>

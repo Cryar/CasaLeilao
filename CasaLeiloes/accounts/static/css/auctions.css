@@ -1,0 +1,59 @@
+/* auctions.css */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 20px;
+    padding: 20px;
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 18px;
+    margin: 0;
+}
+
+.card-text {
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.text-muted {
+    color: #888;
+    font-size: 12px;
+    margin: 5px 0;
+}
+
+.product-image {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+}
+
+.card-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn {
+    padding: 5px 10px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-outline-primary {
+    border: 1px solid #007bff;
+    color: #007bff;
+}
+
+.watch_button {
+    margin-left: auto;
+}

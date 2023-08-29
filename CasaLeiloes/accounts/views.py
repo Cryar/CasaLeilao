@@ -69,18 +69,28 @@ def index(request):
     produtos = Produtos.objects.all()
     bids = BiddingHistory.objects.all()
     images = ProdutosImage.objects.all()
-    auctions =Leiloes.objects.all()
+
+    with connection.cursor() as cursor:
+        # Execute the raw SQL query to fetch data from the view
+        query = "SELECT * FROM product_info;"
+        cursor.execute(query)
+        auctions = cursor.fetchall()
+        cursor.close()
+    
 
     context = {
         'produtos': produtos,
         'bids' : bids,
         'images' : images,
-        'auctions': auctions,
+        'auctions':auctions,
     }
     return render(request, 'index.html', context)
     
-def watchlist(request):    
-    return render(request, 'watchlist.html' )
+def watchlist(request, auction_id): 
+    leiloes = get_object_or_404(Leiloes, auction_id=auction_id)
+    with connection.cursor() as cursor:
+        cursor.execute('CALL add_to_watchlist(%s)', [auction_id])
+    return redirect(request, 'auction.html' , auction_id=auction_id)
 
 def adminDashboard(request):
     return render(request, 'adminDashboard.html')
@@ -137,7 +147,7 @@ def alter_produto(request, product_id):
             cursor.execute(
                 "CALL update_product(%s,%s,%s,%s,%s,%s)", 
                 [product_id, new_name, new_description, new_image, deleted_images, new_lot])
-
+        
         return redirect('admin')  # Redirect back to the admin page
 
     context = {
@@ -146,8 +156,7 @@ def alter_produto(request, product_id):
              }
     return render(request, 'alterproduto.html', context)
 
-def add_auction(request, product_id):
-   produto = get_object_or_404(Produtos, product_id=product_id)
+def add_auction(request):
    if request.method == 'POST':
         number_of_bids = request.POST['number_of_bids']
         base_price = request.POST['base_price']
@@ -156,21 +165,18 @@ def add_auction(request, product_id):
         minimum_increment = request.POST['minimum_increment']
 
         with connection.cursor() as cursor:
-            cursor.execute('SELECT create_leilao(%s,%s,%s,%s,%s,%s)', [produto, number_of_bids, base_price,
+            cursor.execute('SELECT create_leilao(%s,%s,%s,%s,%s)', [number_of_bids, base_price,
                                               start_time, end_time, minimum_increment])
 
-        return redirect('adminDashboard.html')  # Redirect to auctions page after inserting
+        return redirect('admin')  # Redirect to auctions page after inserting
    
-   return render(request, 'add_auction.html', produto)
+   return render(request, 'add_auction.html')
+
+
 
 
 def alter_auction(request, auction_id):
-    auction = Leiloes.objects.get(pk=auction_id)
-    with connection.cursor() as cursor:
-        cursor.execute("""
-            SELECT * FROM view_leiloes;
-        """)
-        leiloes = cursor.fetchall()
+    auction = get_object_or_404(Leiloes, auction_id=auction_id) 
     if request.method == 'POST':
         number_of_bids = request.POST['number_of_bids']
         base_price = request.POST['base_price']
@@ -183,7 +189,7 @@ def alter_auction(request, auction_id):
             
         return redirect('admin')  # Redirect to the auctions page after updating
 
-    return render(request, 'alter_auction.html', {'auction': auction}, {'leiloes': leiloes})
+    return render(request, 'alter_auction.html',{'auction': auction})
 
 from django.contrib.auth.decorators import login_required
 
