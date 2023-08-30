@@ -20,7 +20,8 @@
     <link rel="icon" href="/static/images/icon.png">
 
     <!-- PAGE CSS -->
-    <link rel="stylesheet" type="text/css" href="/static/css/index.css">    
+    <link rel="stylesheet" type="text/css" href="/static/css/index.css"> 
+    <link rel="stylesheet" type="text/css" href="/static/css/auctions.css">
     
 </head>
 
@@ -37,17 +38,17 @@
         </button>
 
         <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link" href="/website/Leiloes/">Leiloes</a>
+            <li class="nav-item acitve">
+                <a class="nav-link" id="Leiloes-link" href="/website/Leiloes/">Leiloes</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/website/Negociações/">Negociações</a>
+                <a class="nav-link" id="Produtos-link" href="{% url 'product_list' %}">Produtos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/website/SobreNos/">Sobre Nos</a>
+                <a class="nav-link" id="Negociacoes-link" href="/website/SobreNos/">Negociações</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/website/Contactos/">Contactos</a>
+                <a class="nav-link" id="Contactos-link" href="/website/Contactos/">Contactos</a>
             </li>
         </ul>
         
@@ -72,7 +73,7 @@
         </ul>     
         </nav>
         <nav>
-             <div class="d-flex justify-content-center">
+             <div class="cards-container">
                 <div class="p-2">
                     <div id="replacement">
                         {% block body %}

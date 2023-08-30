@@ -209,3 +209,10 @@ def bid(request, product_id):
 
     context = {'form': form, 'produto': produto}
     return render(request, 'bid.html', context)
+
+def product_list(request):
+    # Retrieve all products from the database
+    produtos = Produtos.objects.all()
+
+    # Render the products template and pass the products data
+    return render(request, 'items.html', {'produtos': produtos})

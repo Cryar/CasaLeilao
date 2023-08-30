@@ -1,13 +1,89 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <link rel="stylesheet" type="text/css" href="/static/css/auctions.css">
+    <!-- Add your other head content here -->
+
+    <!-- Include your auctions.css file -->
+    
+
+    <!-- Add the following CSS to style the grid -->
+    <style>
+        /* Define a container for the grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjust the column width as needed */
+            gap: 20px; /* Adjust the gap between cards */
+            padding: 20px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        /* Style for each auction card */
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .card-text {
+            color: #333;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .text-muted {
+            color: #999;
+        }
+
+        .btn-primary,
+        .btn-outline-primary {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-outline-primary {
+            color: #007bff;
+            border-color: #007bff;
+            background-color: transparent;
+            transition: all 0.3s;
+        }
+
+        .btn-outline-primary:hover {
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+    </style>
 </head>
+
 <body>
+    <!-- Your existing HTML content here -->
+
     <div class="grid-container">
         <!-- Loop through items and create cards -->
         {% for produto in auctions %}
         <div class="card">
+                {% for image in produtos %}
+                <li><img src="item_images/images/products/{{ image }}" alt="" class="product-image"></li>
+                {% endfor %}
             <div class="card-body">
                 <h4 class="card-title">Nome do produto: {{ produto.1 }}</h4>
                 <p class="card-text">Descrição: {{ produto.2 }}</p>
@@ -15,31 +91,32 @@
                 <p class="text-muted">Leilão começa: {{ produto.10|date:'Y-m-d H:i' }}</p>
                 <p class="text-muted">Leilão termina: {{ produto.11|date:'Y-m-d H:i' }}</p>
                 <p class="text-muted">Preço base: {{ produto.9 }}</p>
-                <p class="text-muted">Número de licitações: {{ produto.8}}</p>
-                <ul>
-                    {% for image in produtos %}
-                    <li ><img src="{{image}}" alt="" class="product-image"></li>
-                    {% endfor %}
-                </ul>
+                <p class="text-muted">Número de licitações: {{ produto.8 }}</p>
             </div>
                 {% if user.is_staff %}
-                    <!-- Change Price Button for staff/admin -->
-                    <a href="{% url 'alter_auction' produto.7 %}" class="btn btn-outline-primary">Editar Leilao</a>
+                <!-- Change Price Button for staff/admin -->
+                <a href="{% url 'alter_auction' produto.7 %}" class="btn btn-outline-primary">Editar Leilao</a>
                 {% else %}
-                    {% if watchlist %}
-                        {% if produto.auction_id in watchlist %}
-                            <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='/website/watchlist/{{ produto.7}}'">Unwatch</button>
-                        {% else %}
-                            <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='/website/watchlist/{{ produto.7}}'">Watch</button>
-                        {% endif %}
-                    {% else %}
-                    <button type="button" class="btn btn-primary bid_now_button" onclick="location.href='{% url 'bid' produto.7 %}'">Bid Now</button>
-                    <button type="button" class="btn btn-outline-primary watch_button" onclick="location.href='{% url 'watchlist' produto.7 %}'">Watch</button>
-                    {% endif %}
+                {% if watchlist %}
+                {% if produto.auction_id in watchlist %}
+                <button type="button" class="btn btn-outline-primary watch_button"
+                    onclick="location.href='/website/watchlist/{{ produto.7 }}'">Unwatch</button>
+                {% else %}
+                <button type="button" class="btn btn-outline-primary watch_button"
+                    onclick="location.href='/website/watchlist/{{ produto.7 }}'">Watch</button>
                 {% endif %}
-            </div>
+                {% else %}
+                <button type="button" class="btn btn-primary bid_now_button"
+                    onclick="location.href='{% url 'bid' produto.7 %}'">Bid Now</button>
+                <button type="button" class="btn btn-outline-primary watch_button"
+                    onclick="location.href='{% url 'watchlist' produto.7 %}'">Watch</button>
+                {% endif %}
+                {% endif %}
         </div>
         {% endfor %}
     </div>
+
+    <!-- Your existing HTML content here -->
 </body>
+
 </html>

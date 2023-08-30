@@ -38,6 +38,7 @@ urlpatterns = [
     path('add_auction/', views.add_auction, name='add_auction'),
     path('alter_auction/<int:auction_id>/', views.alter_auction, name='alter_auction'),
     path('bid/<int:product_id>/', views.bid, name='bid'),
+    path('products/', views.product_list, name='product_list'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

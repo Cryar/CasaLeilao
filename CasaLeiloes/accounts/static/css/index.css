@@ -21,11 +21,6 @@
     margin-top: 20px;
     position: absolute;
 }
-        
-#replacement {
-    margin-left: 160px;
-}
-
 #search-button {
     background-color: #007bff;
     color: white;
@@ -35,10 +30,34 @@
     cursor: pointer;
 }
 
-.custom-container {
+.cards-container {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent cards from wrapping to the next row */
+    overflow-x: auto; /* Add horizontal scroll if needed */
     margin-left: 20px;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
-    width: 200px;
+    margin-right: 20px;
+}
+
+.card {
+    /* Card styles as before */
+    /* ... */
+    width: calc(50% - 10px); /* Adjust the width for four cards per row and reduce the space between cards */
+    margin-right: 20px; /* Reduce the margin between cards */
+    box-sizing: border-box; /* Ensure padding doesn't affect the width */
+}
+
+.nav-link.active {
+    background-color: #007bff; /* Change to your desired background color */
+    color: #fff; /* Text color */
+    /* Add any other styles you want */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Add a shadow effect */
+}
+
+/* Link styles for :active and :focus pseudo-classes */
+.nav-link:active,
+.nav-link:focus {
+    background-color: #007bff; /* Change to your desired background color */
+    color: #fff; /* Text color */
+    /* Add any other styles you want */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Add a shadow effect */
 }

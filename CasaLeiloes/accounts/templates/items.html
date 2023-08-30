@@ -2,9 +2,12 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="/static/css/produtos.css">
+    <title>LISTA DE PRODUTOS</title>
 </head>
 <body>
-    <div class="grid-container">
+    {% extends 'index.html' %}
+    {% block body %}
+    <div class="cards-container">
         <!-- Loop through items and create cards -->
         {% for produto in produtos %}
         <div class="card">
@@ -16,15 +19,17 @@
                 <p class="card-text">Descrição: {{ produto.description }}</p>
                 <p class="card-text">Lote: {{produto.lot_id}}</p>
                 <p class="text-muted">Leilão começa: {{ produto.created_at|time:'H:i' }}</p>
+            </div>
             <div class="card-footer">
                 {% if user.is_staff %}
                     <!-- Change Price Button for staff/admin -->
                     <a href="{% url 'alter_produto' produto.product_id %}" class="btn btn-outline-primary">Editar Produto</a>
-                    <a href="{% url 'add_auction' produto.product_id%}" class="btn btn-outline-primary">Leiloar</a>
+                    <a href="{% url 'add_auction' %}" class="btn btn-outline-primary">Leiloar</a>
                 {% endif %}
             </div>
         </div>
         {% endfor %}
     </div>
+    {% endblock %}
 </body>
 </html>
