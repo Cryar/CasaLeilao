@@ -37,8 +37,9 @@ urlpatterns = [
     path('alter_produto/<int:product_id>/', views.alter_produto, name='alter_produto'),
     path('add_auction/', views.add_auction, name='add_auction'),
     path('alter_auction/<int:auction_id>/', views.alter_auction, name='alter_auction'),
-    path('bid/<int:product_id>/', views.bid, name='bid'),
+    path('bid/<int:bid_id>/', views.bid, name='bid'),
     path('products/', views.product_list, name='product_list'),
+    path('negociacoes/', views.negociacoes_list, name='negociacoes'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

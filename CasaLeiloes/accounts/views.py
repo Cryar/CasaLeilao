@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import RegistrationForm, AddItemForm, AlterProduto, BidForm, LeiloesForm
-from .models import CustomUser, Client, Produtos, BiddingHistory, Lotes, ProdutosImage, Leiloes
+from .models import CustomUser, Client, Produtos, BiddingHistory, Lotes, ProdutosImage, Leiloes, Licitacoes
 from django.db import connection
 #changes
 
@@ -66,7 +66,6 @@ def password_change(request):
 
 
 def index(request):
-    produtos = Produtos.objects.all()
     bids = BiddingHistory.objects.all()
     images = ProdutosImage.objects.all()
 
@@ -77,12 +76,10 @@ def index(request):
         auctions = cursor.fetchall()
         cursor.close()
     
-
     context = {
-        'produtos': produtos,
         'bids' : bids,
         'images' : images,
-        'auctions':auctions,
+        'auctions': auctions,
     }
     return render(request, 'index.html', context)
     
@@ -194,25 +191,88 @@ def alter_auction(request, auction_id):
 from django.contrib.auth.decorators import login_required
 
 @login_required
-def bid(request, product_id):
-    produto = get_object_or_404(Produtos, product_id=product_id)
+def bid(request, bid_id):
+    licitacao = get_object_or_404(Licitacoes, bid_id = bid_id)
     if request.method == 'POST':
         form = BidForm(request.POST)
         if form.is_valid():
-            bid_amount = form.cleaned_data['bid_amount']
+            bid_value = form.cleaned_data['bid_value']
             user = request.user  # This should now be a valid CustomUser instance
-            bid_history = BiddingHistory(user=user, item=produto, bid_amount=bid_amount)
+            bid_history = BiddingHistory(user=user, leilao=licitacao.auction, bid_amount=bid_value)
             bid_history.save()
-            return redirect('bid', product_id=product_id)
+            return redirect('bid', bid_id)
     else:
         form = BidForm()
 
-    context = {'form': form, 'produto': produto}
+    context = {'form': form, 'licitacao': licitacao}
     return render(request, 'bid.html', context)
 
 def product_list(request):
-    # Retrieve all products from the database
-    produtos = Produtos.objects.all()
+    # You don't need to retrieve products from the model directly
+    # Instead, you can fetch data from the 'public.product_info' view using raw SQL
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT * FROM public.product_info')
+        rows = cursor.fetchall()
 
-    # Render the products template and pass the products data
-    return render(request, 'items.html', {'produtos': produtos})
+    # Define a list of dictionaries to store the fetched data
+    produtos_data = []
+
+    # Iterate through the rows and convert them to dictionaries
+    for row in rows:
+        produto = {
+            'product_id': row[0],
+            'title': row[1],
+            'description': row[2],
+            'created_at': row[3],
+            'lot_id': row[4],
+            'lot_name': row[5],
+            'lot_description': row[6],
+            'auction_id': row[7],
+            'number_of_bids': row[8],
+            'base_price': row[9],
+            'auction_start': row[10],
+            'auction_end': row[11],
+            'minimum_increment': row[12],
+            'images': row[13],
+        }
+        produtos_data.append(produto)
+
+    # You can now use produtos_data to pass the data to your template
+    context = {
+        'produtos': produtos_data,
+    }
+
+    return render(request, 'items.html', context)
+
+def negociacoes_list(request):
+    # You don't need to retrieve products or auctions from the model directly
+    # Instead, you can fetch data from the 'negociacoes' view using raw SQL
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT * FROM negociacoes')
+        rows = cursor.fetchall()
+
+    # Define a list of dictionaries to store the fetched data
+    negociacoes_data = []
+
+    # Iterate through the rows and convert them to dictionaries
+    for row in rows:
+        negociacao = {
+            'negociacoes_id': row[0],
+            'lot_id': row[1],
+            'title': row[2],
+            'description': row[3],
+            'bid_value': row[4],
+            'valor_proposto': row[5],
+            'hora_inicio': row[6],
+            'hora_fim': row[7],
+            'auction_id': row[8],
+        }
+        negociacoes_data.append(negociacao)
+
+    # You can now use negociacoes_data to pass the data to your template
+    context = {
+        'negociacoes': negociacoes_data,
+    }
+
+    return render(request, 'negociacoes.html', context)
+

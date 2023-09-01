@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="/static/css/produtos.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/auctions.css">
+    <title>LISTA DE NEGOCIACOES</title>
+</head>
+
+<body>
+    {% extends 'index.html' %}
+    {% block body %}
+    <div class="grid-container">
+        <!-- Loop through items and create cards -->
+        {% for negociacao in negociacoes %}
+        <div class="card">
+            {% for image in produtos %}
+            <li><img src="item_images/images/products/{{ image }}" alt="" class="product-image"></li>
+            {% endfor %}
+            <div class="card-body">
+                <h4 class="card-title">Leilao: {{ negociacao.title }}</h4>
+                <p class="card-text">Descrição: {{ negociacao.description }}</p>
+                <p class="card-text">Lote: {{ negociacao.lot_name }}</p>
+                <p class="text-muted" id="price-{{ negociacao.negociacoes_id }}" style="display: none;">Preço base: {{ negociacao.valor_proposto }}€</p>
+                <p class="text-muted">Leilão começa: {{ negociacao.hora_inicio|date:'Y-m-d H:i' }}</p>
+                <p class="text-muted">Leilão termina: {{ negociacao.hora_fim|date:'Y-m-d H:i' }}</p>
+                
+                {% if user.is_staff %}
+                    <input type="checkbox" id="show-price-{{ negociacao.negociacoes_id }}" class="toggle-price">
+                    <label for="show-price-{{ negociacao.negociacoes_id }}">Show Base Price</label>
+                    
+                {% else %}
+                    {% if negociacao.valor_proposto %}
+                        <!-- Display the price for normal users if available -->
+                        <p class="text-muted">Preço base: {{ negociacao.valor_proposto }}€</p>
+                    {% endif %}
+                {% endif %}
+            
+                {% if user.is_staff %}
+                    <!-- Change Price Button for staff/admin -->
+                    <a href="{% url 'alter_auction' negociacao.auction_id %}" class="btn btn-outline-primary">Editar Leilao</a>
+                {% else %}
+                    {% if watchlist %}
+                        {% if negociacao.auction_id in watchlist %}
+                            <button type="button" class="btn btn-outline-primary watch_button"
+                                onclick="location.href='/website/watchlist/{{ negociacao.auction_id }}'">Unwatch</button>
+                        {% else %}
+                            <button type="button" class="btn btn-outline-primary watch_button"
+                                onclick="location.href='/website/watchlist/{{ negociacao.auction_id }}'">Watch</button>
+                        {% endif %}
+                    {% else %}
+                        <button type="button" class="btn btn-primary bid_now_button"
+                            onclick="location.href='{% url 'bid' negociacao.auction_id %}'">Bid Now</button>
+                        <button type="button" class="btn btn-outline-primary watch_button"
+                            onclick="location.href='{% url 'watchlist' negociacao.auction_id %}'">Watch</button>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <script>
+        const togglePriceCheckboxes = document.querySelectorAll('.toggle-price');
+        togglePriceCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                const priceId = this.id.replace('show-price-', '');
+                const priceElement = document.getElementById(`price-${priceId}`);
+                priceElement.style.display = this.checked ? 'inline' : 'none';
+            });
+        });
+    </script>
+    {% endblock%}
+</body>
+
+</html>

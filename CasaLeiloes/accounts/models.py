@@ -56,9 +56,11 @@ class watchlist_user(models.Model):
 
 class Licitacoes(models.Model):
     bid_id = models.IntegerField(primary_key=True, serialize=True, unique=True)
+    auction  = models.ForeignKey(Leiloes, on_delete=models.CASCADE)
     user = models.IntegerField()
     bid_time = models.DateTimeField()
     minimum_value = models.DecimalField(max_digits=6, decimal_places=2)
+    bid_value = models.DecimalField(max_digits=6, decimal_places=2)
     final_value = models.DecimalField(max_digits=6, decimal_places=2)
 
 class Centro_custo(models.Model):

@@ -75,8 +75,6 @@
 </head>
 
 <body>
-    <!-- Your existing HTML content here -->
-
     <div class="grid-container">
         <!-- Loop through items and create cards -->
         {% for produto in auctions %}
@@ -85,17 +83,18 @@
                 <li><img src="item_images/images/products/{{ image }}" alt="" class="product-image"></li>
                 {% endfor %}
             <div class="card-body">
-                <h4 class="card-title">Nome do produto: {{ produto.1 }}</h4>
+                <h4 class="card-title">Leilao: {{ produto.1 }}</h4>
                 <p class="card-text">Descrição: {{ produto.2 }}</p>
                 <p class="card-text">Lote: {{ produto.4 }}</p>
                 <p class="text-muted">Leilão começa: {{ produto.10|date:'Y-m-d H:i' }}</p>
                 <p class="text-muted">Leilão termina: {{ produto.11|date:'Y-m-d H:i' }}</p>
-                <p class="text-muted">Preço base: {{ produto.9 }}</p>
+                <p class="text-muted {% if not show_base_price %}hidden{% endif %}">Preço base: {{ produto.9 }}€</p>
                 <p class="text-muted">Número de licitações: {{ produto.8 }}</p>
-            </div>
+            
                 {% if user.is_staff %}
                 <!-- Change Price Button for staff/admin -->
                 <a href="{% url 'alter_auction' produto.7 %}" class="btn btn-outline-primary">Editar Leilao</a>
+
                 {% else %}
                 {% if watchlist %}
                 {% if produto.auction_id in watchlist %}
@@ -112,6 +111,7 @@
                     onclick="location.href='{% url 'watchlist' produto.7 %}'">Watch</button>
                 {% endif %}
                 {% endif %}
+            </div>
         </div>
         {% endfor %}
     </div>

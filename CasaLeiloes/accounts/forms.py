@@ -69,4 +69,4 @@ class LeiloesForm(forms.ModelForm):
 
 
 class BidForm(forms.Form):
-    bid_amount = forms.DecimalField(max_digits=10, decimal_places=2)
+    bid_value = forms.DecimalField(label='bid_value', max_digits=10, decimal_places=2)
