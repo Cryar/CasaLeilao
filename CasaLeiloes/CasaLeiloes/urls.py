@@ -32,14 +32,16 @@ urlpatterns = [
     path('perfil/', views.perfil, name='perfil'),
     path('edit_perfil/<int:user_id>/', views.edit_perfil, name='edit_perfil'),
     path('password_change/', views.password_change, name='password_change'),
-    path('watchlist/<int:auction_id>/', views.watchlist, name='watchlist'),
-    path('add_item/', views.add_item, name='add_item'),
+    path('watchlist/<int:auction_id>', views.watchlist, name='watchlist'),
+    path('watchlist/', views.watchlist_auctions, name='watchlist'),
+    path('add_item/', views.insert_product, name='add_item'),
     path('alter_produto/<int:product_id>/', views.alter_produto, name='alter_produto'),
     path('add_auction/', views.add_auction, name='add_auction'),
     path('alter_auction/<int:auction_id>/', views.alter_auction, name='alter_auction'),
     path('bid/<int:bid_id>/', views.bid, name='bid'),
     path('products/', views.product_list, name='product_list'),
     path('negociacoes/', views.negociacoes_list, name='negociacoes'),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

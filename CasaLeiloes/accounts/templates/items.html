@@ -18,13 +18,11 @@
                 <h4 class="card-title">Produto: {{ produto.title }}</h4>
                 <p class="card-text">Descrição: {{ produto.description }}</p>
                 <p class="card-text">Lote: {{produto.lot_id}}</p>
-                <p class="text-muted">Leilão começa: {{ produto.created_at|time:'H:i' }}</p>
             </div>
             <div class="card-footer">
                 {% if user.is_staff %}
                     <!-- Change Price Button for staff/admin -->
                     <a href="{% url 'alter_produto' produto.product_id %}" class="btn btn-outline-primary">Editar Produto</a>
-                    <a href="{% url 'add_auction' %}" class="btn btn-outline-primary">Leiloar</a>
                 {% endif %}
             </div>
         </div>

@@ -80,15 +80,15 @@
         {% for produto in auctions %}
         <div class="card">
                 {% for image in produtos %}
-                <li><img src="item_images/images/products/{{ image }}" alt="" class="product-image"></li>
+                <li><img src="{{ image.image.url }}" alt="" class="product-image"></li>
                 {% endfor %}
             <div class="card-body">
                 <h4 class="card-title">Leilao: {{ produto.1 }}</h4>
                 <p class="card-text">Descrição: {{ produto.2 }}</p>
                 <p class="card-text">Lote: {{ produto.4 }}</p>
+                <p class="card-text">Preço base: {{ product.8}}</p>
                 <p class="text-muted">Leilão começa: {{ produto.10|date:'Y-m-d H:i' }}</p>
                 <p class="text-muted">Leilão termina: {{ produto.11|date:'Y-m-d H:i' }}</p>
-                <p class="text-muted {% if not show_base_price %}hidden{% endif %}">Preço base: {{ produto.9 }}€</p>
                 <p class="text-muted">Número de licitações: {{ produto.8 }}</p>
             
                 {% if user.is_staff %}

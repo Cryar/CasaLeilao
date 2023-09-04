@@ -1,7 +1,10 @@
 from django.contrib.auth import login, authenticate, logout
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import RegistrationForm, AddItemForm, AlterProduto, BidForm, LeiloesForm
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
 from .models import CustomUser, Client, Produtos, BiddingHistory, Lotes, ProdutosImage, Leiloes, Licitacoes
+
 from django.db import connection
 #changes
 
@@ -84,7 +87,6 @@ def index(request):
     return render(request, 'index.html', context)
     
 def watchlist(request, auction_id): 
-    leiloes = get_object_or_404(Leiloes, auction_id=auction_id)
     with connection.cursor() as cursor:
         cursor.execute('CALL add_to_watchlist(%s)', [auction_id])
     return redirect(request, 'auction.html' , auction_id=auction_id)
@@ -100,6 +102,7 @@ def add_item(request):
             item_description = form.cleaned_data['item_description']
             item_lot = form.cleaned_data['item_lot']
             item_images = form.cleaned_data['item_images']  # Get list of uploaded images
+            leilao_id   = form.cleaned_data['leilao_id']
             
             item_lot_instance = Lotes.objects.get(pk=item_lot)
             
@@ -108,6 +111,7 @@ def add_item(request):
                     title=item_name,
                     description=item_description,
                     lot=item_lot_instance,
+                    leilao_id=leilao_id,
                 )
                 new_item.save()
 
@@ -126,6 +130,35 @@ def add_item(request):
 
     return render(request, 'admin.html', {'form': form, 'error_message': error_message})
 
+def insert_product(request):
+    if request.method == 'POST':
+        # Get the data for the new product from the request
+        title = request.POST['item_name']
+        description = request.POST['item_description']
+        lot_id = int(request.POST['item_lot'])
+        auction_id = int(request.POST['auction_id'])
+
+        # Get the uploaded image file
+        image = request.FILES.get('item_images')
+
+        # Create a file system storage object
+        fs = FileSystemStorage(location=settings.MEDIA_ROOT)
+
+        # Save the uploaded file to the media directory and get its path/URL
+        if image:
+            image_name = fs.save(image.name, image)
+            image_path = fs.url(image_name)
+        else:
+            image_path = None
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT insert_product(%s, %s, %s, %s, %s)",
+                [title, description, int(lot_id), int(auction_id), image_path]
+            )
+
+        return render(request,'items.html')
+    
 def alter_produto(request, product_id):
     produto = get_object_or_404(Produtos, product_id=product_id)
     existing_images = ProdutosImage.objects.filter(produto=produto)  # Fetch existing images
@@ -155,14 +188,14 @@ def alter_produto(request, product_id):
 
 def add_auction(request):
    if request.method == 'POST':
-        number_of_bids = request.POST['number_of_bids']
+        auction_number = request.POST['auction_number']
         base_price = request.POST['base_price']
         start_time = request.POST['start_time']
         end_time = request.POST['end_time']
         minimum_increment = request.POST['minimum_increment']
 
         with connection.cursor() as cursor:
-            cursor.execute('SELECT create_leilao(%s,%s,%s,%s,%s)', [number_of_bids, base_price,
+            cursor.execute('SELECT create_leilao(%s,%s,%s,%s,%s)', [auction_number, base_price,
                                               start_time, end_time, minimum_increment])
 
         return redirect('admin')  # Redirect to auctions page after inserting
@@ -276,3 +309,29 @@ def negociacoes_list(request):
 
     return render(request, 'negociacoes.html', context)
 
+def watchlist(request, auction_id):
+    # Convert auction_id to an integer (assuming it's passed as a string)
+    auction_id = int(auction_id)
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT auction_id FROM accounts_leiloes WHERE auction_id = %s", [auction_id])
+        result = cursor.fetchone()
+
+        # Check if the auction with the provided ID exists in accounts_leiloes
+        if result:
+            # If the auction exists, call the PostgreSQL function to add it to the watchlist
+            cursor.execute('SELECT add_leilao_to_watchlist(%s)', [auction_id])
+
+    # Redirect to the index.html page (or any other page you want)
+    return redirect(request, 'auction.html')
+
+def watchlist_auctions(request):
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT * FROM watchlist_auctions')
+        auctions_data = cursor.fetchall()
+    
+    context = {
+        'auctions_data': auctions_data,
+    }
+    
+    return render(request, 'watchlist.html', context)

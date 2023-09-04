@@ -22,30 +22,21 @@
                         <h1 class="card-title">Add Produtos</h1>
                         <form method="post" action="{% url 'add_item' %}" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <div class="form-group">
-                                <label for="item_name">Item Name</label>
-                                <input type="text" class="form-control" id="item_name" name="item_name">
-                            </div>
-                            <div class="form-group">
-                                <label for="item_description">Item Description</label>
-                                <textarea class="form-control" id="item_description" name="item_description"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="item_lot">Lote</label>
-                                <input class="form-control" id="item_lot" name="item_lot">
-                            </div>
-                            <div class="form-group">
-                                <label for="item_images">Item Images</label>
-                                <input type="file" class="form-control-file" id="item_images" name="item_images" multiple>
-                            </div>
-                            <div class="form-group">
-                                <label for="selected_products">Select leilao</label>
-                                <select class="form-control" id="selected_products" name="selected_products" multiple>
-                                    {% for leilao in leiloes %}
-                                        <option value="{{ leilao.auction_id }}">{{ leilao.auction_id }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
+                            <label for="item_name">Title:</label>
+                            <input type="text" id="item_name" name="item_name" required><br><br>
+                    
+                            <label for="item_description">Description:</label>
+                            <textarea id="item_description" name="item_description" required></textarea><br><br>
+                    
+                            <label for="item_lot">Lot ID:</label>
+                            <input type="text" id="item_lot" name="item_lot" required><br><br>
+
+                            <label for="item_images">Images:</label>
+                            <input type="file" id="item_images" name="item_images"><br><br>
+                    
+                            <label for="auction_id">Auction ID:</label>
+                            <input type="text" id="auction_id" name="auction_id" required><br><br>
+                    
                             <button type="submit" class="btn btn-primary">Add produto</button>
                         </form>
                     </div>
@@ -60,8 +51,8 @@
                         <form method="post" action="{% url 'add_auction' %}">
                             {% csrf_token %}
                             <div class="form-group">
-                                <label for="number_of_bids">Number of Bids</label>
-                                <input type="number" class="form-control" id="number_of_bids" name="number_of_bids">
+                                <label for="number_of_bids">Auction Number</label>
+                                <input type="number" class="form-control" id="auction_number" name="auction_number">
                             </div>
                             <div class="form-group">
                                 <label for="base_price">Base Price</label>

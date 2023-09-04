@@ -60,6 +60,11 @@ class AlterProduto(forms.Form):
        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-control-file'}), 
        required= False
     )
+    new_lot = forms.IntegerField(
+        label='Leilao_id',
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        required= False
+    )
     
 
 class LeiloesForm(forms.ModelForm):

@@ -2,7 +2,6 @@
 <html>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="/static/css/produtos.css">
     <link rel="stylesheet" type="text/css" href="/static/css/auctions.css">
     <title>LISTA DE NEGOCIACOES</title>
 </head>
@@ -28,15 +27,6 @@
                 {% if user.is_staff %}
                     <input type="checkbox" id="show-price-{{ negociacao.negociacoes_id }}" class="toggle-price">
                     <label for="show-price-{{ negociacao.negociacoes_id }}">Show Base Price</label>
-                    
-                {% else %}
-                    {% if negociacao.valor_proposto %}
-                        <!-- Display the price for normal users if available -->
-                        <p class="text-muted">Preço base: {{ negociacao.valor_proposto }}€</p>
-                    {% endif %}
-                {% endif %}
-            
-                {% if user.is_staff %}
                     <!-- Change Price Button for staff/admin -->
                     <a href="{% url 'alter_auction' negociacao.auction_id %}" class="btn btn-outline-primary">Editar Leilao</a>
                 {% else %}
