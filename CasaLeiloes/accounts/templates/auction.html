@@ -2,12 +2,7 @@
 <html>
 
 <head>
-    <!-- Add your other head content here -->
-
-    <!-- Include your auctions.css file -->
-    
-
-    <!-- Add the following CSS to style the grid -->
+    <link rel="stylesheet" type="text/css" href="/static/css/auctions.css">
     <style>
         /* Define a container for the grid */
         .grid-container {
@@ -102,7 +97,7 @@
                     onclick="location.href='/website/watchlist/{{ produto.7 }}'">Unwatch</button>
                 {% else %}
                 <button type="button" class="btn btn-outline-primary watch_button"
-                    onclick="location.href='/website/watchlist/{{ produto.7 }}'">Watch</button>
+                    onclick="location.href='{% url 'watchlist' produto.7 %}'">Watch</button>
                 {% endif %}
                 {% else %}
                 <button type="button" class="btn btn-primary bid_now_button"
