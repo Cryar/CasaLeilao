@@ -10,7 +10,7 @@
 .card {
     /* Card styles as before */
     /* ... */
-    width: calc(25% - 10px); /* Adjust the width for four cards per row and reduce the space between cards */
+    width: calc(10% - 10px); /* Adjust the width for four cards per row and reduce the space between cards */
     margin-right: 10px; /* Reduce the margin between cards */
     box-sizing: border-box; /* Ensure padding doesn't affect the width */
 }
