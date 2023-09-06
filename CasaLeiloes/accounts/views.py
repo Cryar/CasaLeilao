@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import RegistrationForm, AddItemForm, AlterProduto, BidForm, LeiloesForm
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
+from django.http import HttpResponse
 from .models import CustomUser, Client, Produtos, BiddingHistory, Lotes, ProdutosImage, Leiloes, Licitacoes
 
 from django.db import connection
@@ -241,16 +242,12 @@ def bid(request, bid_id):
     return render(request, 'bid.html', context)
 
 def product_list(request):
-    # You don't need to retrieve products from the model directly
-    # Instead, you can fetch data from the 'public.product_info' view using raw SQL
     with connection.cursor() as cursor:
         cursor.execute('SELECT * FROM public.product_info')
         rows = cursor.fetchall()
-
-    # Define a list of dictionaries to store the fetched data
+        
     produtos_data = []
 
-    # Iterate through the rows and convert them to dictionaries
     for row in rows:
         produto = {
             'product_id': row[0],
@@ -270,11 +267,9 @@ def product_list(request):
         }
         produtos_data.append(produto)
 
-    # You can now use produtos_data to pass the data to your template
     context = {
         'produtos': produtos_data,
     }
-
     return render(request, 'items.html', context)
 
 def negociacoes_list(request):
@@ -310,16 +305,13 @@ def negociacoes_list(request):
     return render(request, 'negociacoes.html', context)
 
 def watchlist(request, auction_id):
-    # Convert auction_id to an integer (assuming it's passed as a string)
     auction_id = int(auction_id)
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT auction_id FROM accounts_leiloes WHERE auction_id = %s", [auction_id])
+        cursor.execute("SELECT auction_id FROM watchlist_auctions WHERE auction_id = %s", [auction_id])
         result = cursor.fetchone()
 
-        # Check if the auction with the provided ID exists in accounts_leiloes
         if result:
-            # If the auction exists, call the PostgreSQL function to add it to the watchlist
             cursor.execute('SELECT add_leilao_to_watchlist(%s)', [auction_id])
 
     # Redirect to the index.html page (or any other page you want)
@@ -335,3 +327,15 @@ def watchlist_auctions(request):
     }
     
     return render(request, 'watchlist.html', context)
+
+def download_xml_auctions(request):
+    # Execute the PostgreSQL function to get XML data
+    with connection.cursor() as cursor:
+        cursor.execute('SELECT todos_os_leiloes_xml()')
+        xml_data = cursor.fetchone()[0]
+    
+    # Create an XML response
+    response = HttpResponse(xml_data, content_type='application/xml')
+    response['Content-Disposition'] = 'attachment; filename="auctions.xml"'
+    
+    return response

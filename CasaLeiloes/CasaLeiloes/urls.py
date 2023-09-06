@@ -41,6 +41,7 @@ urlpatterns = [
     path('bid/<int:bid_id>/', views.bid, name='bid'),
     path('products/', views.product_list, name='product_list'),
     path('negociacoes/', views.negociacoes_list, name='negociacoes'),
+    path('download-xml-auctions/', views.download_xml_auctions, name='download_xml_auctions'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

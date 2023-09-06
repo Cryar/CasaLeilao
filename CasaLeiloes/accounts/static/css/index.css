@@ -41,7 +41,7 @@
 .card {
     /* Card styles as before */
     /* ... */
-    width: calc(50% - 10px); /* Adjust the width for four cards per row and reduce the space between cards */
+    width: calc(25% - 10px); /* Adjust the width for four cards per row and reduce the space between cards */
     margin-right: 20px; /* Reduce the margin between cards */
     box-sizing: border-box; /* Ensure padding doesn't affect the width */
 }

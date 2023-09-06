@@ -7,25 +7,25 @@
 <body>
     {% extends 'index.html' %}
     {% block body %}
-    <h1>Alter Auction</h1>
+    <h1>Alterar Leiloes</h1>
     <form method="post">
         {% csrf_token %}
-        <label for="number_of_bids">Number of Bids:</label>
+        <label for="number_of_bids">Numero de Licitações:</label>
         <input type="number" name="number_of_bids" value="{{ auction.number_of_bids }}">
         <br>
-        <label for="base_price">Base Price:</label>
+        <label for="base_price">Preço Base:</label>
         <input type="number" step="100" name="base_price" value="{{ auction.base_price }}">
         <br>
-        <label for="start_time">Start Time:</label>
+        <label for="start_time">Começo:</label>
         <input type="datetime-local" name="start_time" value="{{ auction.start_time|date:'Y-m-d\TH:i' }}">
         <br>
-        <label for="end_time">End Time:</label>
+        <label for="end_time">Fim:</label>
         <input type="datetime-local" name="end_time" value="{{ auction.end_time|date:'Y-m-d\TH:i' }}">
         <br>
-        <label for="minimum_increment">Minimum Increment:</label>
+        <label for="minimum_increment">Incremento Minimo:</label>
         <input type="number" step="100" name="minimum_increment" value="{{ auction.minimum_increment }}" default="100">
         <br>
-        <button type="submit" class="btn btn-primary">Update Auction</button>
+        <button type="submit" class="btn btn-primary">atualizar Leilão</button>
     </form>
     {%endblock%}
 </body>

@@ -24,7 +24,6 @@ class RegistrationForm(forms.ModelForm):
         return user
 
 class LoginForm(AuthenticationForm):
-    # No need to define fields as they are inherited from AuthenticationForm
     pass
 
 class AddItemForm(forms.Form):

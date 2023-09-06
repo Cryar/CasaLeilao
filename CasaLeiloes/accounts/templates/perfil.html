@@ -15,14 +15,6 @@
             <!-- Admin-specific content here -->
         {% else %}
         <br><p class="text-center">Your balance: ${{ user.client.balance }}</p>
-            <h5 class="text-center">Your watchlist:</h5>
-            <ul class="list-group">
-                {% for item in user.client.watchlist.all %}
-                    <li class="list-group-item">{{ item.name }}</li>
-                {% empty %}
-                    <li class="list-group-item">Your watchlist is empty.</li>
-                {% endfor %}
-            </ul>
         {% endif %}
     </div>
     {% endblock %}

@@ -3,6 +3,16 @@
 
 <head>
     <link rel="stylesheet" type="text/css" href="/static/css/auctions.css">
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -10,14 +20,16 @@
         <!-- Loop through items and create cards -->
         {% for produto in auctions %}
         <div class="card">
+            <ul>
                 {% for image in produtos %}
                 <li><img src="{{ image.image.url }}" alt="" class="product-image"></li>
                 {% endfor %}
+            </ul>
             <div class="card-body">
                 <h4 class="card-title">Leilao: {{ produto.1 }}</h4>
                 <p class="card-text">Descrição: {{ produto.2 }}</p>
                 <p class="card-text">Lote: {{ produto.4 }}</p>
-                <p class="card-text">Preço base: {{ produto.9}}€</p>
+                <p class="card-text">Preço base: {{ produto.9 }}€</p>
                 <p class="text-muted">Leilão começa: {{ produto.10|date:'Y-m-d H:i' }}</p>
                 <p class="text-muted">Leilão termina: {{ produto.11|date:'Y-m-d H:i' }}</p>
                 <p class="text-muted">Número de licitações: {{ produto.8 }}</p>
@@ -28,20 +40,21 @@
                 {% else %}
                 {% if user.is_authenticated %}
                 <button type="button" class="btn btn-primary bid_now_button"
-                    onclick="location.href='{% url 'bid' produto.7 %}'">Bid Now</button>
-                {%else%}
-                {% if watchlist %}
-                {% if produto.auction_id in watchlist %}
+                onclick="location.href='{% url 'bid' produto.7 %}'">Bid Now</button>
                 <button type="button" class="btn btn-outline-primary watch_button"
-                    onclick="location.href='/website/watchlist/{{ produto.7 }}'">Unwatch</button>
-                {% else %}
-                <button type="button" class="btn btn-outline-primary watch_button"
-                    onclick="location.href='{% url 'watchlist' produto.7 %}'">Watch</button>
-                {% endif %}
+                onclick="location.href='{% url 'watchlist' produto.7 %}'">Watch</button>
                 {% else %}
                 <button type="button" class="btn btn-primary bid_now_button"
-                    onclick="location.href='{% url 'register' %}'">Bid Now</button>
-                <button type="button" class="btn btn-outline-primary watch_button"
+                onclick="location.href='{% url 'register' %}'">Bid Now</button>
+            <button type="button" class="btn btn-outline-primary watch_button"
+                onclick="location.href='{% url 'watchlist' produto.7 %}'">Watch</button>
+                {% endif %}
+                    {% if watchlist %}
+                    {% if produto.auction_id in watchlist %}
+                    <button type="button" class="btn btn-outline-primary watch_button"
+                    onclick="location.href='{% url 'watchlist' produto.7 %}'">Unwatch</button>
+                    {% else %}
+                    <button type="button" class="btn btn-outline-primary watch_button"
                     onclick="location.href='{% url 'watchlist' produto.7 %}'">Watch</button>
                 {% endif %}
                 {% endif %}
@@ -53,3 +66,4 @@
 </body>
 
 </html>
+

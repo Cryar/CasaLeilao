@@ -3,49 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
     <!-- Include Bootstrap CSS and other stylesheets -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Include your custom CSS if needed -->
-    <link rel="stylesheet" href="/static/css/index.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/auctions.css">
+    <link rel="stylesheet" href="/static/css/auctions.css">
+    
 </head>
 <body>
     {% extends 'index.html' %}
     {% block body %}
-    <div class="container mt-4" style="width: 2000px;">
-        <h1 class="card-title">Admin Dashboard</h1>
-        <div class="row justify-content-center">
-            <!-- Add Item Form -->
-            <div class="col-md-6 mx-auto">
+    <div class="row justify-content-center">
+    <div class="container mt-4" style="width: 10000px;">
+     <h2 class="card-title">Admin Dashboard</H2>
+            <div class="col-md-8 mx-auto">
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title">Add Produtos</h1>
                         <form method="post" action="{% url 'add_item' %}" enctype="multipart/form-data">
                             {% csrf_token %}
-                            <label for="item_name">Title:</label>
-                            <input type="text" id="item_name" name="item_name" required><br><br>
-                    
-                            <label for="item_description">Description:</label>
-                            <textarea id="item_description" name="item_description" required></textarea><br><br>
-                    
-                            <label for="item_lot">Lot ID:</label>
-                            <input type="text" id="item_lot" name="item_lot" required><br><br>
-
-                            <label for="item_images">Images:</label>
-                            <input type="file" id="item_images" name="item_images"><br><br>
-                    
-                            <label for="auction_id">Auction ID:</label>
-                            <input type="text" id="auction_id" name="auction_id" required><br><br>
-                    
+                            <div class="form-group"> <!-- This div was missing -->
+                                <label for="item_name">Title:</label>
+                                <input type="text" id="item_name" name="item_name" required><br><br>
+                            </div>
+                            <div class="form-group">
+                                <label for="item_description">Description:</label>
+                                <textarea id="item_description" name="item_description" required></textarea><br><br>
+                            </div>
+                            <div class="form-group">
+                                <label for="item_lot">Lot ID:</label>
+                                <input type="text" id="item_lot" name="item_lot" required><br><br>
+                            </div>
+                            <div class="form-group">
+                                <label for="item_images">Images:</label>
+                                <input type="file" id="item_images" name="item_images"><br><br>
+                            </div>
+                            <div class="form-group">
+                                <label for="auction_id">Auction ID:</label>
+                                <input type="text" id="auction_id" name="auction_id" required><br><br>
+                            </div>
                             <button type="submit" class="btn btn-primary">Add produto</button>
                         </form>
                     </div>
                 </div>
             </div>
+
             
             <!-- Add Auction Form -->
-            <div class="col-md-6 mx-auto">
+            <div class="col-md-8 mx-auto">
                 <div class="card">
                     <div class="card-body">
                         <h1 class="card-title">Add Auction</h1>

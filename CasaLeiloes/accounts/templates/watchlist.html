@@ -17,31 +17,29 @@
             <li><img src="item_images/images/products/{{ image }}" alt="" class="product-image"></li>
             {% endfor %}
             <div class="card-body">
-                <h4 class="card-title">Leilao: {{ produto.1 }}</h4>
-                <p class="card-text">Descrição: {{ produto.2 }}</p>
-                <p class="card-text">Lote: {{ produto.4 }}</p>
-                <p class="card-text">Preço base: {{ produto.12 }}</p>
-                <p class="text-muted">Leilão começa: {{ produto.10|date:'Y-m-d H:i' }}</p>
-                <p class="text-muted">Leilão termina: {{ produto.11|date:'Y-m-d H:i' }}</p>
-                <p class="text-muted {% if not show_base_price %}hidden{% endif %}">Preço base: {{ produto.9 }}€</p>
-                <p class="text-muted">Número de licitações: {{ produto.8 }}</p>
+                <h4 class="card-title">Leilao: {{ produto.6 }}</h4>
+                <p class="card-text">Descrição: {{ produto.7 }}</p>
+                <p class="card-text">Lote: {{ produto.7 }}</p>
+                <p class="card-text">Preço base: {{ produto.2 }}</p>
+                <p class="text-muted">Leilão começa: {{ produto.3|date:'Y-m-d H:i' }}</p>
+                <p class="text-muted">Leilão termina: {{ produto.4|date:'Y-m-d H:i' }}</p>
+                <p class="text-muted">Número de licitações: {{ produto.1 }}</p>
 
                 {% if user.is_staff %}
                 <!-- Change Price Button for staff/admin -->
-                <a href="{% url 'alter_auction' produto.7 %}" class="btn btn-outline-primary">Editar Leilao</a>
-
+                <a href="{% url 'alter_auction' produto.0 %}" class="btn btn-outline-primary">Editar Leilao</a>
                 {% else %}
                 {% if watchlist %}
                 {% if produto.auction_id in watchlist %}
                 <button type="button" class="btn btn-outline-primary watch_button"
-                    onclick="location.href='/website/watchlist/{{ produto.1 }}'">Unwatch</button>
+                    onclick="location.href='/website/watchlist/{{ produto.0 }}'">Unwatch</button>
                 {% else %}
                 <button type="button" class="btn btn-outline-primary watch_button"
-                    onclick="location.href='/website/watchlist/{{ produto.1 }}'">Watch</button>
+                    onclick="location.href='/website/watchlist/{{ produto.0 }}'">Watch</button>
                 {% endif %}
                 {% else %}
                 <button type="button" class="btn btn-primary bid_now_button"
-                    onclick="location.href='{% url 'bid' produto.1 %}'">Bid Now</button>
+                    onclick="location.href='{% url 'bid' produto.0 %}'">Bid Now</button>
                 <button type="button" class="btn btn-outline-primary watch_button"
                     onclick="location.href='{% url 'watchlist' %}'">Watch</button>
                 {% endif %}

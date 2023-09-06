@@ -1,0 +1,28 @@
+/* Custom CSS for Admin Dashboard */
+
+/* Adjust the container width */
+.container {
+    width: 100%; /* Set it to 100% to take the full width */
+    max-width: 2000px; /* Set a maximum width if needed */
+}
+
+/* Center the title */
+.card-title {
+    text-align: center;
+}
+
+/* Style the form fields and buttons */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+}
+
+/* Center the form within the card */
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
